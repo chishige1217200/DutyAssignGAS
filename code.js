@@ -144,6 +144,7 @@ function main() {
    */
   let members = loadMembers();
 
+  console.log(getDateString('yyyyMMdd_HHmmss'));
   console.log(dutys);
   console.log(members);
 
