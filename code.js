@@ -35,18 +35,18 @@ class Assigner {
 
     /**
      * 担当者情報（添字順で対応）
-     * @type {string[]}
+     * @type {Member[]}
      */
-    this._charge = [];
+    this._charges = [];
   }
 
   /**
    * 担当者を割り当てる
-   * @param {string} name 担当者の名前
+   * @param {Member} member 担当者の名前
    */
-  assign(name) {
-    if (this._charge.length < this._dutys.length)
-      this._charge.push(name);
+  assign(member) {
+    if (this._charges.length < this._dutys.length)
+      this._charges.push(member);
     else
       throw new RangeError("当番内容に対して担当者が多すぎます．");
   }
@@ -94,6 +94,34 @@ class Member {
    */
   addCount() {
     _count += 1;
+  }
+}
+
+// 候補者管理クラスです
+class MemberManager {
+  /**
+  * @param {string[][]} members 名前と充当回数のリスト（複数人）
+  */
+  constructor(members) {
+    /**
+     * 候補者リスト
+     * @type {Member[]}
+     */
+    this._members = [];
+    for (let i = 0; i < members.length; i++) {
+      if (members[i].length < 2) throw new RangeError('候補者の情報が不足しています．');
+      if (members[i][1] === '') throw new ReferenceError('回数の値が無効です．');
+
+      this._members.push(new Member(members[i][0], members[i][1]));
+    }
+  }
+
+  /**
+  * 充当回数を取得します
+  * @return {number} 充当回数
+  */
+  get getCount() {
+    return this._count;
   }
 }
 
@@ -147,5 +175,9 @@ function main() {
   console.log(getDateString('yyyyMMdd_HHmmss'));
   console.log(dutys);
   console.log(members);
+
+  let memberManager = new MemberManager(members);
+
+  console.log(memberManager);
 
 }
